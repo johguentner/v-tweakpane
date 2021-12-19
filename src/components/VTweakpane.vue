@@ -52,13 +52,30 @@
               Object.keys(props.pane.folders).length > 0
             ) {
               props.pane.folders.forEach((folder) => {
-                pane.value?.addFolder(folder);
+                var createdFolder = pane.value?.addFolder(folder);
+                
+                if(folder.expanded != null){
+                    createdFolder.expanded = folder.expanded;
+                }
+                
+                if (
+                folder.inputs &&
+                Object.keys(folder.inputs).length > 0
+              ) {
+                  folder.inputs.forEach((input) => {
+                    for (const [key] of Object.entries(input)) {
+                      createdFolder.addInput(input, key);
+                    }
+                  });
+                }
               });
             }
             if (props.pane?.tabs && Object.keys(props.pane.tabs).length > 0) {
               props.pane.tabs.forEach((tab) => {
                 pane.value?.addTab(tab);
               });
+              
+              
             }
           }
         });
